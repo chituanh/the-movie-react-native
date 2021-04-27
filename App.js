@@ -1,21 +1,39 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import "react-native-gesture-handler";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+import * as React from "react";
+import { Provider } from "react-redux";
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { applyMiddleware, combineReducers, createStore } from "redux";
+import ReduxThunk from "redux-thunk";
+
+import LoginNavigation from "./navigation/LoginNavigation";
+import MenuHomeNavigation from "./navigation/MenuHomeNavigation";
+
+import authReducer from "./store/reducers/auth";
+import filmReducer from "./store/reducers/film";
+
+const Stack = createStackNavigator();
+
+const rootReducer = combineReducers({
+  auth: authReducer,
+  film: filmReducer,
 });
+
+const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
+
+const App = (props) => {
+  return (
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator headerMode="none">
+          <Stack.Screen name="Login" component={LoginNavigation} />
+          <Stack.Screen name="MenuHome" component={MenuHomeNavigation} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
+  );
+};
+
+export default App;
