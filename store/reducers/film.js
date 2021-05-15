@@ -1,10 +1,10 @@
-import { FAVORITEFILM, GETFILM } from "../actions/film";
+import { FAVORITEFILM, GETFILM, REVIEWFILM, SEARCHFILM } from "../actions/film";
 
 const initialState = {
   film: null,
-  favoriteFilm: null,
   purchasedFilm: null,
   listAction: null,
+  searchFilm: null,
 };
 
 export default (state = initialState, action) => {
@@ -25,27 +25,30 @@ export default (state = initialState, action) => {
         film: action.film,
         listAction: loadedAction,
       };
-
-    // khi người dùng thích/bỏ thích một bộ phim nè
-    case FAVORITEFILM:
-      const filmFavIndex = state.film.findIndex(
-        (prod) => prod.key === action.favorite
-      );
-
-      if (action.favorite == true) {
-        return {
-          ...state,
-          favoriteFilm: state.favoriteFilm.concat(state.film[filmFavIndex]),
-        };
-      } else {
-        return {
-          ...state,
-          favoriteFilm: state.favoriteFilm.filter(
-            (prod) => prod.key !== action.idFilm
-          ),
-        };
+    
+    // Đánh giá một flim nào đó 
+    case REVIEWFILM: 
+      const ItemKey = action.indexNewFilm.Key;
+      const updateFilm = [...state.film];
+      const indexItem = updateFilm.findIndex((prod) => prod.Key == ItemKey);
+      console.log(indexItem);
+      updateFilm[indexItem] = action.indexNewFilm;
+      return {
+        film: updateFilm,
+        purchasedFilm: state.purchasedFilm,
+        listAction: state.listAction,
+        searchFilm: state.searchFilm,
       }
+    // tìm kiếm flim 
+    case SEARCHFILM: 
+      return {
+        ...state,
+        searchFilm: action.searchFilm,
+      }
+
     default:
       return state;
+
+
   }
 };

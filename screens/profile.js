@@ -14,9 +14,12 @@ import { Button } from "react-native-paper";
 
 import React from "react";
 import Colors from "../constants/Colors";
+import {useSelector} from 'react-redux';
 
 const Profile = (props) => {
   const { width, height } = Dimensions.get("window");
+  const userInfo = useSelector((state) => state.auth.userInfo);
+
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#000" barStyle="light-content" />
@@ -31,9 +34,9 @@ const Profile = (props) => {
           }}
         />
         <View style={styles.listInfomation}>
-          <Text style={styles.infomationName}>Phùng Thế Tài</Text>
-          <Text style={styles.infomationDetail}>Hà nội, Việt Nam</Text>
-          <Text style={styles.infomationDetail}>chituanh212@gmail.com</Text>
+          <Text style={styles.infomationName}>{userInfo.fullName}</Text>
+          <Text style={styles.infomationDetail}>{userInfo.address.length == 0 ? "Chưa có địa chỉ" :userInfo.address }</Text>
+          <Text style={styles.infomationDetail}>{userInfo.emailId}</Text>
         </View>
       </View>
 
@@ -75,6 +78,16 @@ const Profile = (props) => {
           title="Chính Sách Bảo Mật"
           right={(props) => (
             <List.Icon {...props} icon="arrow-right" color="white" />
+          )}
+          titleStyle={styles.itemList}
+        />
+        <Divider style={styles.divider} />
+        <List.Item
+          title="Tài khoản"
+          right={(propsHi) => (
+            <View style = {{justifyContent: 'center', marginRight: 10}} >
+              <Text style = {{ color: 'white', fontWeight: 'bold', fontSize: 18}} >{userInfo.balance} $</Text>
+            </View>
           )}
           titleStyle={styles.itemList}
         />
@@ -153,7 +166,8 @@ const styles = StyleSheet.create({
   },
   actionSettingContainer: {
     backgroundColor: "#455a64",
-    margin: 20,
+    marginLeft: 20,
+    marginRight: 20,
 
     shadowColor: "#000",
     shadowOffset: {

@@ -1,7 +1,10 @@
 import User from "../../model/users";
+import { List } from "react-native-paper";
 
 export const SIGNUP = "SIGNUP";
 export const LOGIN = "LOGIN";
+export const MUAFILM = "MUAFILM";
+export const SUAINFO = "SUAINFO";
 
 export const signup = (email, password, userName) => {
   return async (dispatch) => {
@@ -33,25 +36,26 @@ export const signup = (email, password, userName) => {
 
     const resData = await response.json();
 
-     await fetch(
+    await fetch(
       `https://movie-app-af014-default-rtdb.firebaseio.com/user/${resData.localId}.json`,
       {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           fullName: userName,
-          picture: "",
+          picture: "https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg",
           emailId: email,
           address: "",
           country: "",
           balance: 100000000,
+          listFilm: ["-MYYaZ2GQgHMqgfkla2s"],
         }),
       }
     );
 
-    const info = new User(userName, "", email, "", "", 100000000);
+    const info = new User(userName, 'https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg', email, "", "", 100000000, []);
 
     dispatch({
       type: SIGNUP,
@@ -96,24 +100,110 @@ export const login = (email, password) => {
     );
 
     const cay = await responseOK.json();
-    var info ;
-    for(const key in cay) {
-      info = new User(
-        cay[key].fullName,
-        cay[key].picture,
-        cay[key].emailId,
-        cay[key].address,
-        cay[key].country,
-        cay[key].balance
-      );
-    }
+    console.log(cay);
+    var info = new User(
+      cay.fullName,
+      cay.picture,
+      cay.emailId,
+      cay.address,
+      cay.country,
+      cay.balance,
+      cay.listFilm
+    );
     console.log(info);
-    
+
     dispatch({
       type: LOGIN,
       token: resData.idToken,
       userId: resData.localId,
       userInfo: info,
     });
+  };
+};
+
+export const muaFilm = (userId, user, film) => {
+  return async (dispatch) => {
+    try {
+      if (user.balance - film.Price < 0) {
+        throw new Error("Tài khoản của bạn không đủ!!!");
+      }
+      const newUser = new User(
+        user.fullName,
+        user.picture,
+        user.emailId,
+        user.address,
+        user.country,
+        user.balance - film.Price,
+        !("listLilm" in user) ? [...user.listFilm, film.Key] : [film.Key]
+      );
+      await fetch(
+        `https://movie-app-af014-default-rtdb.firebaseio.com/user/${userId}.json`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            fullName: user.fullName,
+            picture: user.picture,
+            emailId: user.emailId,
+            address: user.address,
+            country: user.country,
+            balance: user.balance - film.Price,
+            listFilm: [...user.listFilm, film.Key],
+          }),
+        }
+      );
+
+      dispatch({
+        type: MUAFILM,
+        userInfo: newUser,
+      });
+    } catch (error) {
+      throw error;
+    }
+  };
+};
+
+export const updateInfo = (userId, userInfo, userName, diaChi, quocGia) => {
+  return async (dispatch) => {
+    try {
+      console.log('Update info');
+      const newUserInfo = new User(
+        userName,
+        userInfo.picture,
+        userInfo.emailId,
+        diaChi,
+        quocGia,
+        userInfo.balance,
+        userInfo.listFilm
+      );
+      await fetch(
+        `https://movie-app-af014-default-rtdb.firebaseio.com/user/${userId}.json`,
+        {
+          'method': 'PUT',
+          headers: {
+            "Content-Type": "application/json",
+          },
+          'body': JSON.stringify({
+            fullName: userName,
+            picture: userInfo.picture,
+            emailId: userInfo.emailId,
+            address: diaChi,
+            country: quocGia,
+            balance: userInfo.balance,
+            listFilm: userInfo.listFilm,
+          })
+        }
+      );
+
+      dispatch({
+        type: SUAINFO,
+        userInfo: newUserInfo,
+      })
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   };
 };

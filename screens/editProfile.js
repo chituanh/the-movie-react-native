@@ -1,5 +1,6 @@
 import { Button, TextInput } from "react-native-paper";
 import {
+  Alert,
   Image,
   KeyboardAvoidingView,
   ScrollView,
@@ -11,17 +12,32 @@ import {
 
 import Colors from "../constants/Colors";
 import React from "react";
+import {useSelector, useDispatch} from 'react-redux';
+import * as authActions from '../store/actions/auth';
+
 
 const EditProfile = (props) => {
+  const dispatch = useDispatch();
+  const userId = useSelector((state) => state.auth.userId);
+  const userInfo = useSelector((state) => state.auth.userInfo);
+  var txtFullName = userInfo.fullName;
+  var txtDiaChi = userInfo.address;
+  var txtQuocGia = userInfo.country;
+
+  const updateInfor = async  () => {
+    console.log('Update info');
+    try {
+      await dispatch(authActions.updateInfo(userId, userInfo, txtFullName, txtDiaChi, txtQuocGia));
+      await Alert.alert('Notification!', 'Update sucess!!', [{text: 'OK'}])
+      props.navigation.pop();
+    } catch(error) {
+      Alert.alert('Notification!', 'Update thất bại!!', [{text: 'OK'}])
+    }
+  } 
+
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior="padding"
-      keyboardVerticalOffset={60}
-    >
       <ScrollView style={styles.screen}>
         <View style={styles.screen}>
-          {/* hihi */}
           <View style={styles.changeImageContainer}>
             <Image
               style={styles.image}
@@ -40,15 +56,10 @@ const EditProfile = (props) => {
               mode="outlined"
               style={styles.input}
               label="Họ Và Tên"
-            />
-          </View>
-
-          <View style={styles.containerInput}>
-            <TextInput
-              mode="outlined"
-              style={styles.input}
-              label="Email"
-              placeholderTextColor="white"
+              defaultValue = {userInfo.fullName}
+              onChangeText = { (value) => {
+                txtFullName = value;
+              } }
             />
           </View>
 
@@ -58,6 +69,10 @@ const EditProfile = (props) => {
               style={styles.input}
               label="Địa chỉ"
               placeholderTextColor="white"
+              defaultValue = {userInfo.address}
+              onChangeText = { (value) => {
+                txtDiaChi = value;
+              } }
             />
           </View>
 
@@ -67,27 +82,20 @@ const EditProfile = (props) => {
               style={styles.input}
               label="Quốc Gia"
               placeholderTextColor="white"
+              defaultValue = {userInfo.country}
+              onChangeText = { (value) => {
+                txtQuocGia = value;
+              } }
             />
           </View>
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress = {updateInfor} >
             <View style={styles.buttomSave}>
-              <Button
-                mode="contained"
-                labelStyle={{ fontWeight: "bold" }}
-                style={{
-                  height: 50,
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                LƯU THAY ĐỔI
-              </Button>
+                <Text style = {{fontWeight: 'bold', fontSize: 18, color: 'white'}} >LƯU THAY ĐỔI</Text>
             </View>
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </KeyboardAvoidingView>
   );
 };
 
@@ -97,7 +105,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   changeImageContainer: {
-    height: 200,
+    height: 150,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -113,7 +121,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   containerInput: {
-    marginVertical: 10,
+    marginVertical: 5,
     marginHorizontal: 20,
   },
   titleInput: {
@@ -130,6 +138,9 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     borderRadius: 10,
     overflow: "hidden",
+    backgroundColor: Colors.accent,
+    padding: 10,
+    alignItems: 'center',
   },
 });
 

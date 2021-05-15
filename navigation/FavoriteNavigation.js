@@ -9,7 +9,7 @@ const Stack = createStackNavigator();
 export default () => (
   <Stack.Navigator >
     <Stack.Screen
-      name="Favorite"
+      name="List Film by Category"
       component={FavoriteScreen}
       options={({ navigation }) => ({
         headerTintColor: "white",
@@ -19,7 +19,7 @@ export default () => (
       })}
     />
     <Stack.Screen
-      name="FavoriteDetail"
+      name="ListFilm"
       component={FavoriteScreenDetail}
       options={({ navigation }) => ({
         headerTintColor: "white",

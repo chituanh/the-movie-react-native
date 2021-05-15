@@ -1,44 +1,39 @@
 import {
   Dimensions,
   FlatList,
-  Image,
-  ImageBackground,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   ActivityIndicator,
   View,
 } from "react-native";
-import { Feather, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Carousel from "react-native-snap-carousel";
+import { Searchbar } from "react-native-paper";
 
 import Colors from "../constants/Colors";
 import * as filmActions from "../store/actions/film";
-import LinearGradient from "react-native-linear-gradient";
 import FilmItem from "../components/UI/FilmItem";
 
 const Home = ({ navigation }) => {
   const { width, height } = Dimensions.get("window");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
-  const films = useSelector((state) => state.film.film);
+  var films = useSelector((state) => state.film.film);
   const actionFilm = useSelector((state) => state.film.listAction);
+  const [searchQuery, setSearchQuery] = useState("");
   const dispatch = useDispatch();
 
   const loadedFilm = useCallback(async () => {
-    console.log("Load film");
     try {
       await dispatch(filmActions.getchFilm());
     } catch (err) {
       setError(err);
     }
-  }, [dispatch, setIsLoading, setError]);
+  }, [dispatch, setError, setIsLoading]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -47,119 +42,88 @@ const Home = ({ navigation }) => {
       setError(err.message);
     });
     setIsLoading(false);
-  }, [dispatch, loadedFilm]);
-
-  const routeRecents = () => {
-    props.navigation.navigate("Recents");
-  };
-
-  if (isLoading) {
+  }, [dispatch, loadedFilm, isLoading]);
+  console.log(films);
+  if (isLoading || films == null) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <ActivityIndicator size="large" color={Colors.primary} />
       </View>
     );
-  }
-
-  const renderAction = ({ item, index }) => {
+  } else {
     return (
-      <TouchableOpacity activeOpacity={0.7}>
+      <ScrollView
+        style={{ backgroundColor: Colors.backgroudColor }}
+        blurRadius={100}
+      >
+        <StatusBar backgroundColor="#040" barStyle="light-content" />
+
+        <View style={{ margin: 10 }}>
+          <Searchbar
+            placeholder="Search"
+            onChangeText={(text) => setSearchQuery(text)}
+            onIconPress = {() => {
+              navigation.push('SearchResult', {
+                'keySearch': searchQuery,
+              });
+            }}
+          />
+        </View>
+
+        <Text style={styles.lable}>Trending</Text>
         <View
           style={{
-            borderRadius: 10,
+            height: 300,
+            width: "100%",
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor: "#99d98c",
-            width: "100%",
-            height: 120,
           }}
         >
-          <Text style={{ color: "white", fontWeight: "bold", fontSize: 20 }}>
-            {item}
-          </Text>
+          <ScrollView>
+          <Carousel
+            key={(item) => `first ${item.LinkFilm}`}
+            data={films == null ? null : films.slice(0, 10)}
+            renderItem={(props) => (
+              <FilmItem
+                item={props.item}
+                onTap={() => {
+                  navigation.push("DetailFilm", {
+                    itemId: props.item,
+                  });
+                }}
+              />
+            )}
+            layout="default"
+            sliderWidth={width}
+            itemWidth={240}
+            autoplay={true}
+            useScrollView={true}
+            loop={true}
+          />
+          </ScrollView>
         </View>
-      </TouchableOpacity>
-    );
-  };
-  console.log(films);
+        <Text style={styles.lable}>Opening This Week</Text>
 
-  return (
-    <ScrollView
-      style={{ backgroundColor: Colors.backgroudColor }}
-      blurRadius={100}
-    >
-      <StatusBar backgroundColor="#040" barStyle="light-content" />
-
-      <Text style={styles.lable}>Trending</Text>
-      <View
-        style={{
-          height: 300,
-          width: "100%",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Carousel
-          keyExtractor={(item) =>  (`first ${item.LinkFilm}`)}
-          data={films}
-          renderItem={(props) => (
+        <ScrollView>
+        <FlatList
+          key={(item) => `${item.Image} Cay`}
+          data={films == null ? null : films.slice(0, 10)}
+          renderItem={(propsRender) => (
             <FilmItem
-              item={props.item}
+              item={propsRender.item}
               onTap={() => {
-                navigation.push("DetailFilm", {
-                  itemId: props.item,
+                navigation.navigate("DetailFilm", {
+                  itemId: propsRender.item,
                 });
               }}
             />
           )}
-          layout="stack"
-          sliderWidth={width}
-          itemWidth={240}
-          autoplay={true}
-          useScrollView={true}
-          loop={true}
+          numColumns={2}
         />
-      </View>
-
-      <Text style={styles.lable}>Trailers</Text>
-
-      <View
-        style={{
-          width: "100%",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Carousel
-          keyExtractor={(item) => item.key}
-          data={actionFilm}
-          renderItem={renderAction}
-          layout="default"
-          sliderWidth={width}
-          itemWidth={150}
-          autoplay={true}
-          useScrollView={true}
-          loop={true}
-        />
-      </View>
-      <Text style={styles.lable}>Opening This Week</Text>
-      <FlatList
-        keyExtractor={(item) => (`first ${item.LinkFilm}`)}
-        data={films}
-        renderItem={(propsRender) => (
-          <FilmItem
-            item={propsRender.item}
-            onTap={() => {
-              navigation.navigate("DetailFilm", {
-                itemId: propsRender.item,
-              });
-            }}
-          />
-        )}
-        numColumns={2}
-      />
-    </ScrollView>
-  );
+        </ScrollView>
+      </ScrollView>
+    );
+  }
 };
 
 const styles = StyleSheet.create({

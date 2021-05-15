@@ -45,9 +45,9 @@ const DetailFilm = (props) => {
                 <IconButton
                   icon="play"
                   onPress={() => {
-                    console.log(props.navigation.push("PlayVideo", {
+                    props.navigation.push("PlayVideo", {
                       item: itemNi,
-                    }));
+                    });
                   }}
                 />
               </View>
