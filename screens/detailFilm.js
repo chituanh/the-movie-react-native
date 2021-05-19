@@ -66,7 +66,7 @@ const DetailFilm = (props) => {
             <Text style={styles.text}>View</Text>
           </View>
           <View style={styles.subThongTinThoiLuong}>
-            <Text style={styles.textBold}>{itemNi.Rate}/5</Text>
+            <Text style={styles.textBold}>{Math.round(itemNi.Rate * 100) / 100}/5</Text>
             <Text style={styles.text}>Rate</Text>
           </View>
         </View>

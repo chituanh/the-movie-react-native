@@ -23,7 +23,7 @@ const ReviewScreen = (props) => {
     } catch(error) {
       setIsCheck(error.toString());
     }
-    Alert.alert('Thông báo', `${isCheck != null ? isCheck : 'review thành công' }`, [{text:'Ok'}])
+    Alert.alert('Notification!', `${isCheck != null ? isCheck : 'rated success!' }`, [{text:'Ok'}])
     props.navigation.pop();
   } 
 

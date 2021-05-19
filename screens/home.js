@@ -43,10 +43,10 @@ const Home = ({ navigation }) => {
     });
     setIsLoading(false);
   }, [dispatch, loadedFilm, isLoading]);
-  console.log(films);
+
   if (isLoading || films == null) {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View style={styles.screenCenter}>
         <ActivityIndicator size="large" color={Colors.primary} />
       </View>
     );
@@ -62,64 +62,57 @@ const Home = ({ navigation }) => {
           <Searchbar
             placeholder="Search"
             onChangeText={(text) => setSearchQuery(text)}
-            onIconPress = {() => {
-              navigation.push('SearchResult', {
-                'keySearch': searchQuery,
+            onIconPress={() => {
+              navigation.push("SearchResult", {
+                keySearch: searchQuery,
               });
             }}
           />
         </View>
 
         <Text style={styles.lable}>Trending</Text>
-        <View
-          style={{
-            height: 300,
-            width: "100%",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+        <View style={styles.containerTreding}>
           <ScrollView>
-          <Carousel
-            key={(item) => `first ${item.LinkFilm}`}
-            data={films == null ? null : films.slice(0, 10)}
-            renderItem={(props) => (
-              <FilmItem
-                item={props.item}
-                onTap={() => {
-                  navigation.push("DetailFilm", {
-                    itemId: props.item,
-                  });
-                }}
-              />
-            )}
-            layout="default"
-            sliderWidth={width}
-            itemWidth={240}
-            autoplay={true}
-            useScrollView={true}
-            loop={true}
-          />
+            <Carousel
+              key={(item) => `first ${item.LinkFilm}`}
+              data={films == null ? null : films.slice(0, 10)}
+              renderItem={(props) => (
+                <FilmItem
+                  item={props.item}
+                  onTap={() => {
+                    navigation.push("DetailFilm", {
+                      itemId: props.item,
+                    });
+                  }}
+                />
+              )}
+              layout="default"
+              sliderWidth={width}
+              itemWidth={240}
+              autoplay={true}
+              useScrollView={true}
+              loop={true}
+            />
           </ScrollView>
         </View>
         <Text style={styles.lable}>Opening This Week</Text>
 
         <ScrollView>
-        <FlatList
-          key={(item) => `${item.Image} Cay`}
-          data={films == null ? null : films.slice(0, 10)}
-          renderItem={(propsRender) => (
-            <FilmItem
-              item={propsRender.item}
-              onTap={() => {
-                navigation.navigate("DetailFilm", {
-                  itemId: propsRender.item,
-                });
-              }}
-            />
-          )}
-          numColumns={2}
-        />
+          <FlatList
+            key={(item) => `${item.Image} Cay`}
+            data={films == null ? null : films.slice(0, 10)}
+            renderItem={(propsRender) => (
+              <FilmItem
+                item={propsRender.item}
+                onTap={() => {
+                  navigation.navigate("DetailFilm", {
+                    itemId: propsRender.item,
+                  });
+                }}
+              />
+            )}
+            numColumns={2}
+          />
         </ScrollView>
       </ScrollView>
     );
@@ -136,6 +129,13 @@ const styles = StyleSheet.create({
   text: {
     fontWeight: "bold",
   },
+  containerTreding: {
+    height: 300,
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  screenCenter: { flex: 1, justifyContent: "center", alignItems: "center" },
 });
 
 export default Home;

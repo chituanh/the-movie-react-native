@@ -2,6 +2,7 @@
   "expo": {
     "name": "the-movie-react-native",
     "slug": "the-movie-react-native",
+    "description": "the-movie-react-native",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -20,6 +21,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.chituanh.themoviereactnative",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

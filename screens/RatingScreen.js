@@ -43,7 +43,7 @@ const RatingScreen = (props) => {
               }}
             >
               <Text style={{ fontSize: 45, fontWeight: "bold" }}>
-                {itemOK.Rate}
+                {Math.round(itemOK.Rate * 100) / 100}
               </Text>
               <Text>Out of 05</Text>
             </View>

@@ -33,20 +33,20 @@ const FilmItem = (props) => {
   const muaFilm = async () => {
     try {
       Alert.alert(
-        "Mua flim",
-        `Bạn có chắc chắn mua flim "${film.Name} với giá ${film.Price}"`,
+        "Buy Film",
+        `Are you sure want to buy the film "${film.Name} với giá ${film.Price}" ?`,
         [
           {
             text: "OK",
             onPress: () => {
               addFilm();
-              Alert.alert("Thông báo", `Mua flim "${film.Name}" Thành công`, [
+              Alert.alert("Notification!", `Purchase of "${film.Name}" is successful.`, [
                 { text: "ok" },
               ]);
             },
             style: "default",
           },
-          { text: "Cancel", onPress: () => props.onTap(), style: "cancel" },
+          { text: "Cancel", onPress: () => {}, style: "cancel" },
         ]
       );
     } catch (error) {
@@ -98,7 +98,7 @@ const FilmItem = (props) => {
           }}
         >
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text style={styles.text}>{props.item.Rate}/5</Text>
+            <Text style={styles.text}>{Math.round(props.item.Rate * 100) /100}/5</Text>
             <FontAwesome name="star" color={Colors.primary} />
           </View>
           <Text style={styles.text}>{props.item.Price}$</Text>
@@ -107,10 +107,10 @@ const FilmItem = (props) => {
           <Text  numberOfLines={1} ellipsizeMode = 'tail' style={{ fontWeight: "bold" }}>{props.item.Name}</Text>
           <Text  numberOfLines={1} ellipsizeMode = 'tail'>{ListToString(props.item.Category)}</Text>
         </View>
-        <View>
+        <View style = {{marginBottom: 10}} >
           {!IsMuaFilm() ? (
             <Button onPress={!IsMuaFilm() ? muaFilm : null}>
-              {!IsMuaFilm() ? "MUA FILM" : "XEM FILM"}
+              BUY
             </Button>
           ) : (
             <Text></Text>

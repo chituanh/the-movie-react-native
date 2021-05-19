@@ -6,9 +6,7 @@ import { createMaterialBottomTabNavigator } from "@react-navigation/material-bot
 
 import HomeNavigation from "../navigation/HomeNavigation";
 import ProfileNavigation from "../navigation/ProfileNavigation";
-import Recents from "../screens/recents";
 import FavoriteNavigation from "../navigation/FavoriteNavigation";
-import MyListFilm from "../screens/MyListFilm";
 import MyListNagigation from "./MyListNagigation";
 
 const Tab = createMaterialBottomTabNavigator();

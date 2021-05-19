@@ -31,7 +31,7 @@ const EditProfile = (props) => {
       await Alert.alert('Notification!', 'Update sucess!!', [{text: 'OK'}])
       props.navigation.pop();
     } catch(error) {
-      Alert.alert('Notification!', 'Update thất bại!!', [{text: 'OK'}])
+      Alert.alert('Notification!', 'Update failed!!', [{text: 'OK'}])
     }
   } 
 
@@ -47,7 +47,7 @@ const EditProfile = (props) => {
               }}
             />
             <TouchableOpacity style={styles.buttomChange}>
-              <Text style={styles.titleChange}>Thay đổi ảnh đại diện</Text>
+              <Text style={styles.titleChange}>Change profile picture</Text>
             </TouchableOpacity>
           </View>
 
@@ -55,7 +55,7 @@ const EditProfile = (props) => {
             <TextInput
               mode="outlined"
               style={styles.input}
-              label="Họ Và Tên"
+              label="Full name"
               defaultValue = {userInfo.fullName}
               onChangeText = { (value) => {
                 txtFullName = value;
@@ -67,7 +67,7 @@ const EditProfile = (props) => {
             <TextInput
               mode="outlined"
               style={styles.input}
-              label="Địa chỉ"
+              label="Address"
               placeholderTextColor="white"
               defaultValue = {userInfo.address}
               onChangeText = { (value) => {
@@ -80,7 +80,7 @@ const EditProfile = (props) => {
             <TextInput
               mode="outlined"
               style={styles.input}
-              label="Quốc Gia"
+              label="Country"
               placeholderTextColor="white"
               defaultValue = {userInfo.country}
               onChangeText = { (value) => {
@@ -91,7 +91,7 @@ const EditProfile = (props) => {
 
           <TouchableOpacity onPress = {updateInfor} >
             <View style={styles.buttomSave}>
-                <Text style = {{fontWeight: 'bold', fontSize: 18, color: 'white'}} >LƯU THAY ĐỔI</Text>
+                <Text style = {{fontWeight: 'bold', fontSize: 18, color: 'white'}} >Save Changes</Text>
             </View>
           </TouchableOpacity>
         </View>

@@ -35,7 +35,7 @@ const Profile = (props) => {
         />
         <View style={styles.listInfomation}>
           <Text style={styles.infomationName}>{userInfo.fullName}</Text>
-          <Text style={styles.infomationDetail}>{userInfo.address.length == 0 ? "Chưa có địa chỉ" :userInfo.address }</Text>
+          <Text style={styles.infomationDetail}>{userInfo.address.length == 0 ? "No address" :userInfo.address }</Text>
           <Text style={styles.infomationDetail}>{userInfo.emailId}</Text>
         </View>
       </View>
@@ -44,7 +44,7 @@ const Profile = (props) => {
       <View style={styles.actionSettingContainer}>
         <List.Item
           titleStyle={styles.itemList}
-          title="Ngôn Ngữ"
+          title="Language"
           right={(props) => (
             <List.Icon {...props} icon="arrow-right" color="white" />
           )}
@@ -52,14 +52,14 @@ const Profile = (props) => {
         <Divider style={styles.divider} />
         <List.Item
           titleStyle={styles.itemList}
-          title="Địa Chỉ"
+          title="address"
           right={(props) => (
             <Switch {...props} value={true} onValueChange={() => {}} />
           )}
         />
         <Divider style={styles.divider} />
         <List.Item
-          title="Thông báo"
+          title="Notification"
           right={(props) => (
             <Switch {...props} value={true} onValueChange={() => {}} />
           )}
@@ -67,7 +67,7 @@ const Profile = (props) => {
         />
         <Divider style={styles.divider} />
         <List.Item
-          title="Quốc Gia"
+          title="Country"
           right={(props) => (
             <List.Icon {...props} icon="arrow-right" color="white" />
           )}
@@ -75,7 +75,7 @@ const Profile = (props) => {
         />
         <Divider style={styles.divider} />
         <List.Item
-          title="Chính Sách Bảo Mật"
+          title="Privacy Poli"
           right={(props) => (
             <List.Icon {...props} icon="arrow-right" color="white" />
           )}
@@ -83,7 +83,7 @@ const Profile = (props) => {
         />
         <Divider style={styles.divider} />
         <List.Item
-          title="Tài khoản"
+          title="Account"
           right={(propsHi) => (
             <View style = {{justifyContent: 'center', marginRight: 10}} >
               <Text style = {{ color: 'white', fontWeight: 'bold', fontSize: 18}} >{userInfo.balance} $</Text>
@@ -97,19 +97,19 @@ const Profile = (props) => {
         <Button
           color="red"
           onPress={() => {
-            Alert.alert("Thông báo!!", "Bạn có muốn thoát không??", [
+            Alert.alert("Notification!!", "Are you sure you want to exit?", [
               {
-                text: "Đồng ý",
-                style: 'destructive',
+                text: "Yes",
+                style: 'default',
                 onPress: () => {
                   console.log(props.navigation.replace("Login"));
                 },
               },
-              { text: "Hủy", style: 'cancel'},
+              { text: "Cancel", style: 'cancel'},
             ]);
           }}
         >
-          <Text style = {{fontSize: 19}} >ĐĂNG XUẤT</Text>
+          <Text style = {{fontSize: 19}} >LOG OUT</Text>
         </Button>
       </View>
     </View>
