@@ -24,7 +24,7 @@ const SignInScreen = (props) => {
 
   React.useEffect(() => {
     if (error) {
-      Alert.alert("Lỗi gì đó!!!", error, [{ text: "Đồng Ý" }]);
+      Alert.alert("Notification!!!", error, [{ text: "YES" }]);
     }
   }, [error]);
 

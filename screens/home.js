@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   View,
+  SafeAreaView,
 } from "react-native";
 import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -52,7 +53,7 @@ const Home = ({ navigation }) => {
     );
   } else {
     return (
-      <ScrollView
+      <ScrollView 
         style={{ backgroundColor: Colors.backgroudColor }}
         blurRadius={100}
       >
@@ -72,9 +73,8 @@ const Home = ({ navigation }) => {
 
         <Text style={styles.lable}>Trending</Text>
         <View style={styles.containerTreding}>
-          <ScrollView>
+  
             <Carousel
-              key={(item) => `first ${item.LinkFilm}`}
               data={films == null ? null : films.slice(0, 10)}
               renderItem={(props) => (
                 <FilmItem
@@ -93,13 +93,14 @@ const Home = ({ navigation }) => {
               useScrollView={true}
               loop={true}
             />
-          </ScrollView>
+     
         </View>
         <Text style={styles.lable}>Opening This Week</Text>
 
         <ScrollView>
           <FlatList
             key={(item) => `${item.Image} Cay`}
+            keyExtractor = {(item) => `${item.Image} OK`}
             data={films == null ? null : films.slice(0, 10)}
             renderItem={(propsRender) => (
               <FilmItem
