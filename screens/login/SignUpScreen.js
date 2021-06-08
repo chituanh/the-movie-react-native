@@ -112,7 +112,7 @@ const SignUpScreen = (props) => {
 
         {/* BUTTON */}
         {isLoading ? 
-          <ActivityIndicator />
+          <ActivityIndicator  color="white" size="large" />
         : 
           <Button
             mode="contained"
